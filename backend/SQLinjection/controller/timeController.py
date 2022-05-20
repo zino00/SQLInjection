@@ -1,13 +1,13 @@
 import json
 
-from flask import Flask, request, Response
+from flask import Flask, request, Response, Blueprint
 from SQLinjection.hander.hd_base import require
 from SQLinjection.sql import timesql
 
-app = Flask(__name__)
+bp = Blueprint('time', __name__, url_prefix='/time')
 
 
-@app.route('/time/GetDBName', methods=['POST'])
+@bp.route('/GetDBName', methods=['POST'])
 @require('url')
 def GetDBName():
     DBName = timesql.GetDBName(request.json.get('url'))
@@ -18,7 +18,7 @@ def GetDBName():
     return Response(json.dumps(t), mimetype='application/json')
 
 
-@app.route('/time/GetDBTables', methods=['POST'])
+@bp.route('/GetDBTables', methods=['POST'])
 @require('url', "DBName")
 def GetDBTables():
     DBTables = timesql.GetDBTables(request.json.get('url'), request.json.get('DBName'))
@@ -30,7 +30,7 @@ def GetDBTables():
     return Response(json.dumps(t), mimetype='application/json')
 
 
-@app.route('/time/GetDBColumns', methods=['POST'])
+@bp.route('/GetDBColumns', methods=['POST'])
 @require('url', "DBName", "DBTable")
 def GetDBColumns():
     DBColumns = timesql.GetDBColumns(request.json.get('url'), request.json.get('DBName'), request.json.get('DBTable'))
@@ -42,7 +42,7 @@ def GetDBColumns():
     return Response(json.dumps(t), mimetype='application/json')
 
 
-@app.route('/time/GetDBData', methods=['POST'])
+@bp.route('/GetDBData', methods=['POST'])
 @require('url', "DBTable", "DBColumn")
 def GetDBData():
     DBData = timesql.GetDBData(request.json.get('url'), request.json.get('DBTable'), request.json.get('DBColumn'))
@@ -52,7 +52,3 @@ def GetDBData():
          "DBData": DBData
          }
     return Response(json.dumps(t), mimetype='application/json')
-
-
-if __name__ == '__main__':
-    app.run()

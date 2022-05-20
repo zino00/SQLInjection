@@ -1,13 +1,13 @@
 import json
 
-from flask import Flask, request, Response
+from flask import Flask, request, Response, Blueprint
 from SQLinjection.hander.hd_base import require
 from SQLinjection.sql import errorsql
 
-app = Flask(__name__)
+bp = Blueprint('error', __name__, url_prefix='/error')
 
 
-@app.route('/error/GetDBName', methods=['POST'])
+@bp.route('/GetDBName', methods=['POST'])
 @require('url')
 def GetDBName():
     DBName = errorsql.GetDBName(request.json.get('url'))
@@ -18,7 +18,7 @@ def GetDBName():
     return Response(json.dumps(t), mimetype='application/json')
 
 
-@app.route('/error/GetDBTables', methods=['POST'])
+@bp.route('/GetDBTables', methods=['POST'])
 @require('url', "DBName")
 def GetDBTables():
     DBTables = errorsql.GetDBTables(request.json.get('url'), request.json.get('DBName'))
@@ -30,7 +30,7 @@ def GetDBTables():
     return Response(json.dumps(t), mimetype='application/json')
 
 
-@app.route('/error/GetDBColumns', methods=['POST'])
+@bp.route('/GetDBColumns', methods=['POST'])
 @require('url', "DBName", "DBTable")
 def GetDBColumns():
     DBColumns = errorsql.GetDBColumns(request.json.get('url'), request.json.get('DBName'), request.json.get('DBTable'))
@@ -42,7 +42,7 @@ def GetDBColumns():
     return Response(json.dumps(t), mimetype='application/json')
 
 
-@app.route('/error/GetDBData', methods=['POST'])
+@bp.route('/GetDBData', methods=['POST'])
 @require('url', "DBName", "DBTable", "DBColumn")
 def GetDBData():
     DBData = errorsql.GetDBData(request.json.get('url'), request.json.get('DBName'), request.json.get('DBTable'),
@@ -53,7 +53,3 @@ def GetDBData():
          "DBData": DBData
          }
     return Response(json.dumps(t), mimetype='application/json')
-
-
-if __name__ == '__main__':
-    app.run()

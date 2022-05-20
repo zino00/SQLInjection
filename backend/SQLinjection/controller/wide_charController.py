@@ -1,13 +1,14 @@
 import json
 
-from flask import Flask, request, Response
+from flask import Flask, request, Response, Blueprint
 from SQLinjection.hander.hd_base import require
 from SQLinjection.sql import wide_charsql
 
 app = Flask(__name__)
 
+bp = Blueprint('wide_char', __name__, url_prefix='/wide_char')
 
-@app.route('/wide_char/GetDBName', methods=['POST'])
+@bp.route('/GetDBName', methods=['POST'])
 @require('url')
 def GetDBName():
     DBName = wide_charsql.GetDBName(request.json.get('url'))
@@ -18,7 +19,7 @@ def GetDBName():
     return Response(json.dumps(t), mimetype='application/json')
 
 
-@app.route('/wide_char/GetDBTables', methods=['POST'])
+@bp.route('/GetDBTables', methods=['POST'])
 @require('url', "DBName")
 def GetDBTables():
     DBTables = wide_charsql.GetDBTables(request.json.get('url'), request.json.get('DBName'))
@@ -30,7 +31,7 @@ def GetDBTables():
     return Response(json.dumps(t), mimetype='application/json')
 
 
-@app.route('/wide_char/GetDBColumns', methods=['POST'])
+@bp.route('/GetDBColumns', methods=['POST'])
 @require('url', "DBName", "DBTable")
 def GetDBColumns():
     DBColumns = wide_charsql.GetDBColumns(request.json.get('url'), request.json.get('DBName'), request.json.get('DBTable'))
@@ -42,7 +43,7 @@ def GetDBColumns():
     return Response(json.dumps(t), mimetype='application/json')
 
 
-@app.route('/wide_char/GetDBData', methods=['POST'])
+@bp.route('/GetDBData', methods=['POST'])
 @require('url', "DBName", "DBTable", "DBColumn")
 def GetDBData():
     DBData = wide_charsql.GetDBData(request.json.get('url'), request.json.get('DBName'), request.json.get('DBTable'),
