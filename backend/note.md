@@ -37,7 +37,7 @@ $dbname1 = "challenges";
 
 ![image-20220519193913656](note/image-20220519193913656.png)
 
-原因是php版本太高，mysql_connect已经被弃用，所以我们需要在phpstudy中后选用php5.4.45
+原因是php版本太高，mysql_connect已经被弃用，所以我们需要在phpstudy中后选用php5.3.29
 
 ![image-20220519194149850](note/image-20220519194149850.png)
 
@@ -56,7 +56,7 @@ sc delete mysql
 
 现在可以成功开启phpstudy里的mysql
 
-这是再点击就可以成功设置数据库了
+这时再点击就可以成功设置数据库了
 
 ![image-20220519194530182](note/image-20220519194530182.png)
 
