@@ -1,10 +1,12 @@
 <template>
-  <BasicComponent
-    :getDBName="getDBName"
-    :getDBTables="getDBTables"
-    :getDBColumns="getDBColumns"
-    :getDBData="getDBData"
-  ></BasicComponent>
+  <keep-alive>
+    <BasicComponent
+      :getDBName="getDBName"
+      :getDBTables="getDBTables"
+      :getDBColumns="getDBColumns"
+      :getDBData="getDBData"
+    ></BasicComponent>
+  </keep-alive>
 </template>
 
 <script language="ts">
@@ -12,13 +14,13 @@ import { post } from '@/utils/request'
 import BasicComponent from '@/views/sql/basic.vue'
 
 export default {
+  name: 'BoolTest',
   data () {
-    let type = 'bool'
     return {
-      getDBName: (data) => post(`/api/${type}/GetDBName`, data),
-      getDBTables: (data) => post(`/api/${type}/GetDBTables`, data),
-      getDBColumns: (data) => post(`/api/${type}/GetDBColumns`, data),
-      getDBData: (data) => post(`/api/${type}/GetDBData`, data)
+      getDBName: (data) => post(`/api/bool/GetDBName`, data),
+      getDBTables: (data) => post(`/api/bool/GetDBTables`, data),
+      getDBColumns: (data) => post(`/api/bool/GetDBColumns`, data),
+      getDBData: (data) => post(`/api/bool/GetDBData`, data)
     }
   },
   components: {

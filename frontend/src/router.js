@@ -35,31 +35,31 @@ const constantRoutes = [
         path: 'bool',
         component: () => import('@/views/sql/bool'),
         name: 'BoolTest',
-        meta: { title: '布尔盲注', noCache: true }
+        meta: { title: '布尔盲注', noCache: false, keepAlive: true }
       },
       {
         path: 'time',
         component: () => import('@/views/sql/time'),
         name: 'TimeTest',
-        meta: { title: '时间盲注', noCache: true }
+        meta: { title: '时间盲注', noCache: false, keepAlive: true }
       },
       {
         path: 'union',
         component: () => import('@/views/sql/union'),
         name: 'UnionTest',
-        meta: { title: '联合注入', noCache: true }
+        meta: { title: '联合注入', noCache: false, keepAlive: true }
       },
       {
         path: 'error',
         component: () => import('@/views/sql/error'),
         name: 'ErrorTest',
-        meta: { title: '报错注入', noCache: true }
+        meta: { title: '报错注入', noCache: false, keepAlive: true }
       },
       {
         path: 'wide_char',
         component: () => import('@/views/sql/wide_char'),
         name: 'WideCharTest',
-        meta: { title: '宽字节注入', noCache: true }
+        meta: { title: '宽字节注入', noCache: false, keepAlive: true }
       }
     ]
   }
