@@ -1,8 +1,9 @@
 {
 	"info": {
-		"_postman_id": "a596d688-e1d7-4ad5-9e93-ffd34687b79b",
+		"_postman_id": "9bd1a22e-f5b5-4bd7-96f6-e276548dde9e",
 		"name": "sqllab",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20520231"
 	},
 	"item": [
 		{
@@ -281,7 +282,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"url\": \"http://127.0.0.1/sqli-labs/Less-8/\"\r\n}",
+							"raw": "{\r\n    \"url\": \"http://127.0.0.1/sqli-labs/Less-2/\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -289,7 +290,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:5000/time/GetDBName",
+							"raw": "http://127.0.0.1:5000/error/GetDBName",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -299,7 +300,7 @@
 							],
 							"port": "5000",
 							"path": [
-								"time",
+								"error",
 								"GetDBName"
 							]
 						}
@@ -313,7 +314,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"url\": \"http://127.0.0.1/sqli-labs/Less-8/\",\r\n    \"DBName\": \"security\"\r\n}",
+							"raw": "{\r\n    \"url\": \"http://127.0.0.1/sqli-labs/Less-2/\",\r\n    \"DBName\": \"security\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -321,7 +322,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:5000/time/GetDBTables",
+							"raw": "http://127.0.0.1:5000/error/GetDBTables",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -331,7 +332,7 @@
 							],
 							"port": "5000",
 							"path": [
-								"time",
+								"error",
 								"GetDBTables"
 							]
 						}
@@ -345,7 +346,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"url\": \"http://127.0.0.1/sqli-labs/Less-8/\",\r\n    \"DBName\": \"security\",\r\n    \"DBTable\": \"users\"\r\n}",
+							"raw": "{\r\n    \"url\": \"http://127.0.0.1/sqli-labs/Less-2/\",\r\n    \"DBName\": \"security\",\r\n    \"DBTable\": \"users\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -353,7 +354,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:5000/time/GetDBColumns",
+							"raw": "http://127.0.0.1:5000/error/GetDBColumns",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -363,7 +364,7 @@
 							],
 							"port": "5000",
 							"path": [
-								"time",
+								"error",
 								"GetDBColumns"
 							]
 						}
@@ -377,7 +378,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"url\": \"http://127.0.0.1/sqli-labs/Less-8/\",\r\n    \"DBTable\": \"users\",\r\n    \"DBColumn\": \"id\"\r\n}",
+							"raw": "{\r\n    \"url\": \"http://127.0.0.1/sqli-labs/Less-2/\",\r\n    \"DBName\": \"security\",\r\n    \"DBTable\": \"users\",\r\n    \"DBColumn\": \"password\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -385,7 +386,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:5000/time/GetDBData",
+							"raw": "http://127.0.0.1:5000/error/GetDBData",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -395,7 +396,7 @@
 							],
 							"port": "5000",
 							"path": [
-								"time",
+								"error",
 								"GetDBData"
 							]
 						}
@@ -414,7 +415,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"url\": \"http://127.0.0.1/sqli-labs/Less-8/\"\r\n}",
+							"raw": "{\r\n    \"url\": \"http://127.0.0.1/sqli-labs/Less-1/\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -422,7 +423,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:5000/time/GetDBName",
+							"raw": "http://127.0.0.1:5000/union/GetDBName",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -432,7 +433,7 @@
 							],
 							"port": "5000",
 							"path": [
-								"time",
+								"union",
 								"GetDBName"
 							]
 						}
@@ -478,7 +479,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"url\": \"http://127.0.0.1/sqli-labs/Less-8/\",\r\n    \"DBName\": \"security\",\r\n    \"DBTable\": \"users\"\r\n}",
+							"raw": "{\r\n    \"url\": \"http://127.0.0.1/sqli-labs/Less-1/\",\r\n    \"DBName\": \"security\",\r\n    \"DBTable\": \"users\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -486,7 +487,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:5000/time/GetDBColumns",
+							"raw": "http://127.0.0.1:5000/union/GetDBColumns",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -496,7 +497,7 @@
 							],
 							"port": "5000",
 							"path": [
-								"time",
+								"union",
 								"GetDBColumns"
 							]
 						}
@@ -518,7 +519,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:5000/time/GetDBData",
+							"raw": "http://127.0.0.1:5000/union/GetDBData",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -528,7 +529,7 @@
 							],
 							"port": "5000",
 							"path": [
-								"time",
+								"union",
 								"GetDBData"
 							]
 						}
@@ -547,7 +548,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"url\": \"http://127.0.0.1/sqli-labs/Less-8/\"\r\n}",
+							"raw": "{\r\n    \"url\": \"http://127.0.0.1/sqli-labs/Less-32/\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -555,7 +556,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:5000/bool/GetDBName",
+							"raw": "http://127.0.0.1:5000/wide_char/GetDBName",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -565,7 +566,7 @@
 							],
 							"port": "5000",
 							"path": [
-								"bool",
+								"wide_char",
 								"GetDBName"
 							]
 						}
@@ -579,7 +580,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"url\": \"http://127.0.0.1/sqli-labs/Less-8/\",\r\n    \"DBName\": \"security\"\r\n}",
+							"raw": "{\r\n    \"url\": \"http://127.0.0.1/sqli-labs/Less-32/\",\r\n    \"DBName\": \"security\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -611,7 +612,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"url\": \"http://127.0.0.1/sqli-labs/Less-8/\",\r\n    \"DBName\": \"security\",\r\n    \"DBTable\": \"users\"\r\n}",
+							"raw": "{\r\n    \"url\": \"http://127.0.0.1/sqli-labs/Less-32/\",\r\n    \"DBName\": \"security\",\r\n    \"DBTable\": \"users\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
