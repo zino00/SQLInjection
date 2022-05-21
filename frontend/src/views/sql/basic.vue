@@ -108,7 +108,8 @@ export default {
       selectedColumns: [],
 
       listLoading: false,
-      testTableData: [
+      testTableData: [],
+      oldtestTableData: [
         {
           tableName: 'test-tbname1',
           columns: [
