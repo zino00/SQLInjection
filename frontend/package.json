@@ -1,8 +1,8 @@
 {
     "name": "xzs-admin",
     "version": "3.7.0",
-    "author": "武汉思维跳跃科技有限公司",
-    "description": "学之思管理系统",
+    "author": "",
+    "description": "SQL 注入系统",
     "license": "AGPL-3.0",
     "private": true,
     "homepage": "https://www.mindskip.net/xzs.html",
@@ -56,6 +56,7 @@
         "script-loader": "^0.7.2",
         "vue": "^2.6.14",
         "vue-count-to": "^1.0.13",
+        "vue-quill-editor": "^3.0.6",
         "vue-router": "^3.5.3",
         "vuex": "^3.6.2",
         "xlsx": "^0.18.5"
