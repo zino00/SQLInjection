@@ -110,7 +110,7 @@ export default {
       listLoading: false,
       testTableData: [
         {
-          tableName: 'tbname1',
+          tableName: 'test-tbname1',
           columns: [
             { columnName: 'column11' },
             { columnName: 'column12' },
@@ -143,7 +143,7 @@ export default {
           ]
         },
         {
-          tableName: 'tbname2',
+          tableName: 'test-tbname2',
           columns: [
             { columnName: 'column21' },
             { columnName: 'column22' },
