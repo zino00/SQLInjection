@@ -45,7 +45,7 @@ const post = function (url, data, params = null) {
     url: url,
     method: 'post',
     withCredentials: true,
-    timeout: 30000,
+    timeout: 60 * 60 * 1000,
     data: data,
     params: params,
     headers: { 'Content-Type': 'application/json', 'request-ajax': true }
