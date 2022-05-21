@@ -1,35 +1,38 @@
 <template>
   <div class="app-container">
     <el-form :model="queryData" ref="queryForm" :inline="true">
-      <el-form-item label="目标 URL：">
-        <el-input v-model="queryData.url"></el-input>
-      </el-form-item>
+      <div>
+        <el-form-item label="目标 URL：">
+          <el-input v-model="queryData.url" style="width: 40rem"></el-input>
+        </el-form-item>
+      </div>
+      <div>
+        <el-form-item label="数据库名称：">
+          <el-input v-model="queryData.DBName"></el-input>
+        </el-form-item>
 
-      <el-form-item label="数据库名称：">
-        <el-input v-model="queryData.DBName"></el-input>
-      </el-form-item>
-
-      <el-form-item label="数据表名：">
-        <el-select v-model="queryData.DBTable" @change="changeDBTableSelected($event)">
-          <el-option
-            v-for="(item,id) in testTableData" :key="id"
-            :label="item.tableName"
-            :value="item.tableName"
-          >
-          </el-option>
-        </el-select>
-      </el-form-item>
-
-      <el-form-item label="数据库列名：">
-          <el-select v-model="queryData.DBColumns">
+        <el-form-item label="数据表名：">
+          <el-select filterable allow-create v-model="queryData.DBTable" @change="changeDBTableSelected($event)">
             <el-option
-              v-for="(item,id) in selectedColumns" :key="id"
-              :label="item.columnName"
-              :value="item.columnName"
+              v-for="(item,id) in testTableData" :key="id"
+              :label="item.tableName"
+              :value="item.tableName"
             >
             </el-option>
           </el-select>
-      </el-form-item>
+        </el-form-item>
+
+        <el-form-item label="数据库列名：">
+            <el-select filterable allow-create v-model="queryData.DBColumn">
+              <el-option
+                v-for="(item,id) in selectedColumns" :key="id"
+                :label="item.columnName"
+                :value="item.columnName"
+              >
+              </el-option>
+            </el-select>
+        </el-form-item>
+      </div>
       <div>
         <el-form-item>
           <el-button type="primary" @click="queryDBName">查询数据库名称</el-button>
@@ -50,7 +53,7 @@
       </div>
 
       <div>
-        <el-table :data="testTableData" style="width: 100%" v-loading="listLoading">
+        <el-table :key="subtable_key" :data="testTableData" style="width: 100%" v-loading="listLoading">
 
           <el-table-column prop="childs" type="expand">
             <template slot-scope="scope">
@@ -103,11 +106,12 @@ export default {
         url: '',
         DBName: '',
         DBTable: '',
-        DBColumns: ''
+        DBColumn: ''
       },
       selectedColumns: [],
 
       listLoading: false,
+      subtable_key: false,
       testTableData: [],
       oldtestTableData: [
         {
@@ -173,7 +177,7 @@ export default {
   },
   methods: {
     changeDBTableSelected (value) {
-      this.queryData.DBColumns = ''
+      this.queryData.DBColumn = ''
       this.selectedColumns = []
 
       let _this = this
@@ -186,7 +190,7 @@ export default {
     clearAll () {
       this.testTableData = []
       this.selectedColumns = []
-      this.queryData.DBTable = this.queryData.DBColumns = ''
+      this.queryData.DBTable = this.queryData.DBColumn = ''
     },
     queryDBName () {
       if (this.queryData.url === '') {
@@ -197,6 +201,7 @@ export default {
       this.listLoading = true
       this.getDBName(this.queryData).then(data => {
         let dbname = data.DBName
+        console.log(dbname)
 
         // check
         let jsontext = JSON.stringify(dbname)
@@ -208,7 +213,8 @@ export default {
         this.queryData.DBName = dbname
         this.listLoading = false
       }).catch((error) => {
-        var msg = '爆破失败' + (error.response ? ': ' + error.response.statusText : '');
+        console.log(error)
+        var msg = '爆破失败' + (error.response ? ': ' + error.response.statusText : '')
         this.$message.error(msg)
         this.listLoading = false
       })
@@ -225,6 +231,7 @@ export default {
       this.listLoading = true
       this.getDBTables(this.queryData).then(data => {
         let DBTables = data.DBTables
+        console.log(DBTables)
 
         // check
         let jsontext = JSON.stringify(DBTables)
@@ -240,14 +247,15 @@ export default {
             }
           })
           if (!found) {
-            this.testTableData.append({ tableName: DBTables[key] })
+            this.testTableData.push({ tableName: DBTables[key] })
           }
         }
 
         this.$message.success('爆破成功')
         this.listLoading = false
       }).catch((error) => {
-        var msg = '爆破失败' + (error.response ? ': ' + error.response.statusText : '');
+        console.log(error)
+        var msg = '爆破失败' + (error.response ? ': ' + error.response.statusText : '')
         this.$message.error(msg)
         this.listLoading = false
       })
@@ -267,6 +275,7 @@ export default {
       this.listLoading = true
       this.getDBColumns(this.queryData).then(data => {
         let DBColumns = data.DBColumns
+        console.log(DBColumns)
 
         // check
         let jsontext = JSON.stringify(DBColumns)
@@ -282,15 +291,16 @@ export default {
         }
         if (this.testTableData[idx].columns === undefined) {
           this.testTableData[idx].columns = []
-          for (let column in DBColumns) {
-            this.testTableData[idx].columns.push(column)
+          for (let colidx in DBColumns) {
+            this.testTableData[idx].columns.push({ columnName: DBColumns[colidx] })
           }
         }
-
         this.$message.success('爆破成功')
         this.listLoading = false
+        this.selectedColumns = this.testTableData[idx].columns
       }).catch((error) => {
-        var msg = '爆破失败' + (error.response ? ': ' + error.response.statusText : '');
+        console.log(error)
+        var msg = '爆破失败' + (error.response ? ': ' + error.response.statusText : '')
         this.$message.error(msg)
         this.listLoading = false
       })
@@ -305,7 +315,7 @@ export default {
       } else if (this.queryData.DBTable === '') {
         this.$message.error('请输入数据表名称')
         return
-      } else if (this.queryData.DBColumns === '') {
+      } else if (this.queryData.DBColumn === '') {
         this.$message.error('请输入数据列名称')
         return
       }
@@ -313,6 +323,7 @@ export default {
       this.listLoading = true
       this.getDBData(this.queryData).then(data => {
         let DBData = data.DBData
+        console.log(DBData)
 
         // check
         let jsontext = JSON.stringify(DBData)
@@ -328,21 +339,23 @@ export default {
         }
         for (var key in DBData) {
           let datalist = DBData[key]
-          for (let i = 0; i < datalist.arr; i++) {
+          for (let i = 0; i < datalist.length; i++) {
             if (this.testTableData[idx].childs === undefined) {
               this.testTableData[idx].childs = []
-            } else if (this.testTableData[idx].childs[i] === undefined) {
-              this.testTableData[idx].childs[i] = {}
-            } else {
-              this.testTableData[idx].childs[i].key = datalist[i]
             }
+            if (this.testTableData[idx].childs[i] === undefined) {
+              this.testTableData[idx].childs[i] = {}
+            }
+            this.testTableData[idx].childs[i][key] = datalist[i]
           }
         }
 
         this.$message.success('爆破成功')
         this.listLoading = false
+        this.subtable_key = !this.subtable_key
       }).catch((error) => {
-        var msg = '爆破失败' + (error.response ? ': ' + error.response.statusText : '');
+        console.log(error)
+        var msg = '爆破失败' + (error.response ? ': ' + error.response.statusText : '')
         this.$message.error(msg)
         this.listLoading = false
       })
