@@ -78,7 +78,7 @@ SQL 注入系统，前端使用Vue框架编写，提供以下5种不同的注入
 
 ## 五、算法实现
 
-通过flask框架编写后端，接口实现在Conroller文件，主要功能实现在sql文件中。
+通过`flask`框架编写后端，接口实现在`*Conroller.py`文件，主要功能实现在`*sql.py`文件中。
 
 ### 主程序 app.py
 
@@ -766,12 +766,18 @@ def GetDBData():
 
 基于报错的注入，是指通过构造特定的SQL语句，让攻击者想要查询的信息（如数据库名、版本号、用户名等）通过页面的错误提示回显出来。 
 
-报错注入一般需要具备两个前提条件:
+报错注入一般需要具备两个前提条件：
 
 1. Web应用程序未关闭数据库报错函数，对于一些SQL语句的错误直接回显在页面上
 2. 后台未对一些具有报错功能的函数进行过滤。
 
 常用的报错功能函数包括`extractvalue()`、`updatexml()`、`floor()`、`exp()`等。
+
+这里使用的是：extractvalue(目标xml文档，xml路径)，updatexml(目标xml文档，xml路径，更新的内容)。
+
+报错原理:
+xml文档中查找字符位置是用`/xxx/xxx/xxx/...`这种格式，如果写入其他格式就会报错,并且会返回写入的非法格式内容，错误信息如:`XPATH syntax error:'xxxxxxxx'`。
+该函数最大显示长度为32，超过长度可以配合`substr`、`limit`等函数来显示
 
 #### errorsql.py
 
@@ -779,10 +785,7 @@ def GetDBData():
 import re
 import requests
 
-# Less-1: ?id=1'
-# Less-2: ?id=1
-# https://blog.csdn.net/qq_52072846/article/details/123003207
-# https://blog.csdn.net/l2872253606/article/details/124423275
+
 # 前提：判断有注入点
 # 常见的注入点payload.
 payloads = ["?id=1'", '?id=1"', "?id=1')", '?id=1")', "?id=1)","?id=1"]
@@ -977,20 +980,17 @@ def GetDBData():
 
 ### 联合查询注入
 
-union会一次显示两个查询结果，我们可以使得第一个查询语句作为正常内容，第二个作为查询语句来进行构造。 
+联合注入的前提是，页面上要有回显位。在一个网站的正常页面，服务端执行SQL语句查询数据库中的数据，客户端将数据展示在页面中，这个展示数据的位置就是回显位。
 
-当页面对不同的查询语句有不同的结果时可以使用，因为我们根据需要每一步的返回结果来判断和进行下一步操作
+主要关注点在于运用Union使前半部分的查询为空，重点Union查询后半部分信息显示在页面上。
+
+例如，参数为`?id=-1 union select 1,database()，3`时，就是让`id=-1`对应的查询为空，利用第2个回显位显示该网站所在的数据库信息。
 
 #### unionsql.py
 
 ```python
 import re
 import requests
-
-# Less-1: ?id=1'
-# Less-2: ?id=1')
-
-# https://zhuanlan.zhihu.com/p/396365059
 
 # 前提1：判断有注入点
 payload1 = "?id=1'"
@@ -1186,11 +1186,15 @@ if __name__ == '__main__':
 
 ### 宽字节注入
 
-在`magic_quotes_gpc=On`的情况下，提交的参数中如果带有单引号`’`，就会被自动转义`\’`，十六进制为`0x5c 0x27`，使很多注入攻击无效，
+产生原因：
 
-**GBK双字节编码：**一个汉字用两个字节表示，首字节对应`0×81-0xFE`，尾字节对应`0×40-0xFE`（除0×7F），刚好涵盖了转义符号`\`对应的编码`0x5C`。
+1. mysql 在使用 GBK 编码的时候，会认为两个字符为一个汉字，例如%aa%5c 就是一个汉字（前一个 ascii 码大于 128 才能到汉字的范围）
+2. mysqli_real_escape_string() 函数转义在 SQL 语句中使用的字符串中的特殊字符。
+3. addslashes() 函数返回在预定义的字符前添加反斜杠的字符串。预定义字符是：单引号（'）、双引号（"）、反斜杠（\）、NULL
 
-例如，`0xD5 0×5C` 对应了汉字“`诚`”，URL编码用百分号加字符的16进制编码表示字符，于是 `%d5%5c` 经URL解码后为“`诚`”，使`'`不再被转义。
+利用条件：
+
+​	如果在使用PHP连接MySQL的时候，又设置了“set character_set_client = gbk" 时又会导致一个编码转换的注入问题，也就是我们所熟悉的宽字节注入。当存在宽字节注入漏洞时（存在addslashes等函数转义），注入参数里带入%df，即可把程序中过滤的 \ ( %5c)吃掉。如：单引号前加%df，而%df%5c表示繁体字“連”，这时单引号成功逃逸。
 
 #### wide_charsql.py
 
@@ -1198,9 +1202,6 @@ if __name__ == '__main__':
 import re
 import requests
 
-# Less-32
-# https://blog.csdn.net/jhzzzz/article/details/113094411
-# https://blog.csdn.net/ZripenYe/article/details/119651799
 # 宽字节注入的情况：'、"、)被转义，如'被转义为\'
 # 单引号前加%df，GBK编码中反斜杠的编码为%5c，而%df%5c表示繁体字“連”，所以这时单引号成功逃逸
 payload1 = "?id=1%df'"
